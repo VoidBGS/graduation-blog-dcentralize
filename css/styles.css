@@ -63,6 +63,12 @@ a:visited {
     animation: scroll-left 20s linear infinite;
 }
 
+#fn-button{
+    background-color: var(--primary);
+    font-weight: bold;
+    border-radius: 3px;
+}
+
 @-moz-keyframes scroll-left {
     0% {
         -moz-transform: translateX(100%);
