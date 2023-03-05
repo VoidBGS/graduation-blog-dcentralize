@@ -6,7 +6,8 @@
 body {
     font-family: 'Courier New', monospace;
     background-color: var(--background);
-    color: var(--primary)
+    color: var(--primary);
+    padding-inline:15em
 }
 
 h1 {
@@ -95,3 +96,9 @@ a:visited {
         transform: translateX(-100%);
     }
 }
+
+@media only screen and (max-width: 60em) {
+    body {
+      padding-inline: 2em;
+    }
+  }
