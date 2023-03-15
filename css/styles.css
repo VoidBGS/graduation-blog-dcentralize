@@ -64,6 +64,7 @@ a:visited {
 }
 
 #UP {
+    user-select: none;
     font-size: 1.2rem;
     font-weight: bolder;
 }
@@ -87,6 +88,12 @@ a:visited {
 
 #fast-scroll:hover{
     box-shadow: 0px 1px 20px 10px var(--primary);
+}
+
+#fast-scroll:active {
+    background-color: var(--primary);
+    opacity: 0.6;
+    color: var(--background);
 }
 
 #fn-button {
