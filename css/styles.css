@@ -63,20 +63,25 @@ a:visited {
     animation: scroll-left 20s linear infinite;
 }
 
+#UP {
+    font-size: 1.2rem;
+    font-weight: bolder;
+}
+
 #fast-scroll {
     width: 3em;
     height: 3em;
     border-radius: 50%;
     border: var(--primary) solid 2px;
     position: fixed;
-    right: 1em;
+    right: -20em;
     bottom: 5em;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     box-shadow: 0px 1px 10px 1px var(--primary);
-    transition: all 150ms;
+    transition: right 900ms;
 }
 
 #fast-scroll:hover{
@@ -126,5 +131,10 @@ a:visited {
 @media only screen and (max-width: 60em) {
     body {
         padding-inline: 2em;
+    }
+
+    #fn-button{
+        margin-top: 1em;
+        width: 100%;
     }
 }
