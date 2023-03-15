@@ -10,6 +10,15 @@ body {
     padding-inline: 15em;
 }
 
+input,
+textarea,
+button,
+select,
+div,
+{
+    -webkit-tap-highlight-color: transparent;
+}
+
 h1 {
     border-bottom: 1px var(--primary) ridge;
 }
