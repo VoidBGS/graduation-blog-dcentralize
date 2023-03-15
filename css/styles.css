@@ -7,7 +7,7 @@ body {
     font-family: 'Courier New', monospace;
     background-color: var(--background);
     color: var(--primary);
-    padding-inline:15em
+    padding-inline: 15em;
 }
 
 h1 {
@@ -23,7 +23,7 @@ p {
 }
 
 b {
-    background-color:rgba(79, 79, 85, 0.4);
+    background-color: rgba(79, 79, 85, 0.4);
     color: aliceblue;
 }
 
@@ -63,7 +63,27 @@ a:visited {
     animation: scroll-left 20s linear infinite;
 }
 
-#fn-button{
+#fast-scroll {
+    width: 3em;
+    height: 3em;
+    border-radius: 50%;
+    border: var(--primary) solid 2px;
+    position: fixed;
+    right: 1em;
+    bottom: 5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0px 1px 10px 1px var(--primary);
+    transition: all 150ms;
+}
+
+#fast-scroll:hover{
+    box-shadow: 0px 1px 20px 10px var(--primary);
+}
+
+#fn-button {
     background-color: var(--primary);
     font-weight: bold;
     border-radius: 3px;
@@ -105,6 +125,6 @@ a:visited {
 
 @media only screen and (max-width: 60em) {
     body {
-      padding-inline: 2em;
+        padding-inline: 2em;
     }
-  }
+}
