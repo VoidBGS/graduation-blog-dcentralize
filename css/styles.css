@@ -10,13 +10,8 @@ body {
     padding-inline: 15em;
 }
 
-input,
-textarea,
-button,
-select,
-div,
-{
-    -webkit-tap-highlight-color: transparent;
+* {
+    -webkit-tap-highlight-color: transparent !important
 }
 
 h1 {
