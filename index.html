@@ -78,7 +78,29 @@
         <h3>14.03.2023 | Versioning issues</h3>
         <p>Yesterday I did not manage to completely fix linting as I stumbled upon issues with the unit tests and the linting in the CI pipeline. First I wanted to see why the unit test failed, so I went to the CI Job page and investigated what went wrong. The error there pointed at an incompatible <b>SQLAlchemy</b> version, which prompted me to try and downgrade the <b>flask-sqlalchemy</b> package. After doing that I did not see any difference, I though about what could be the cause of it and after failing a lot of times and trying not to updated the version of the packages but only to add pylint and pyenchant I saw that there is no way to avoid not updating all the packages. This meant that I HAD to find the problematic package, but I did not really know where it was located as I already tried removing the flask-sqlalchemy package and it did not work. This prompted me to methodically delete packages and check the <b>Pipfile.lock</b> if what I did worked. After doing this a bunch of times I saw that the thing that was messing up the sqlalchemy was the <b>flask-migrations</b> package, it seemed like that package installed both sqlalchemy and flask-sqlalchemy. After locating the bad package I downgraded it and I decided to add sqlalchemy as a seperate package and not to be dependant on the version that flask-migrations provided. I specifed which version of sqlalchemy I wanted in the project, added my changes to a commit and I pushed. This fixed the unit test failure but it did not fix the linting problem. I reserached this issue and I saw that pyenchant was not found in the project, I asked my mentor what he thinks the solution to this was and he pointed me to an old issue that they had in the company and I saw that I was missing a <b>before-script</b> command in the pipeline, where pyenchant could be installed. I added the <b>apt-get update -qq && apt-get install -y python3-enchant</b> command to the pipeline and everything worked! My changes were merged into master afterwards.</p>
         <h3>15.03.2023 | Frontend Linting Finale!</h3>
-        <p>After researching the frontend linters in <a href="https://gitlab.com/appsemble/appsemble">Appsemble</a> I added two linters - <a href="https://stylelint.io/"">stylelint</a> and <a href="https://cspell.org/"">cspell</a> as official frontend linters. I saw that most of the linters that I mentioned before were already in place except cspell and stylelint, after adding these two linters I made sure that the frontend is properly linter and this marks my initial tasks as completed.</p>
+        <p>After researching the frontend linters in <a href="https://gitlab.com/appsemble/appsemble">Appsemble</a> I added two linters - <a href="https://stylelint.io/"">stylelint</a> and <a href="https://cspell.org/"">cspell</a> as official frontend linters. I saw that most of the linters that I mentioned before were already in place except cspell and stylelint. For cspell that I added before I continued my work and made sure to apply the linting suggestions by the litner. I had to change 30 files and fix a lot of typos and even some file name typos. I had to change some of the code also to facilitate these new changes. Afterwards, with stylelint I had to do some version changing to ensure that pylint worked with the <a href="https://styled-components.com/">styled-components</a> that we were using everywhere in the frontend. I did this because styled components were not supported anymore with this newer versions of this linter, only the old ones. Kees and me had a discussion about the viabilty of using styled components after this.</p>
+        <figure>
+            <img src="images/linting_issues_example.png" class="m-img">
+            <figcaption>Image 1 - Example of some of the linting issues.</figcaption>
+        </figure>
+        <p>After adding these two linters I made sure that the frontend is properly linter and this marks my initial tasks as completed.</p>
+        <figure>
+            <img src="images/issues_first_month.png" class="m-img">
+            <figcaption>Image 2 - Marked all my issues as complete.</figcaption>
+        </figure>
+        <h3>16.03.2023 | Sprint delivery and planning</h3>
+        <p>In the daily standup I was told that we are to have a meeting aftewards to discuss my progress and to plan the next sprint and see which issues I am going to tackle to improve the annotator tool. We started by going over what I did this sprint namely:</p>
+        <ul>
+            <li>yarn to npm</li>
+            <li>backend linting</li>
+            <li>frontend linting</li>
+            <li>e2e test fix (again)</li>
+        </ul>
+        <p>After presenting what I did we went over the existing issues in the system, the release is coming up soon and we need to get the bugs sorted before the clients test out the system. The first bugs we are going to sort out are related to the saving of annotators. Afterwards, we will remove the Expert Annotators, and we will start with the planning and implementation of the annotator scoring system, which is the main goal of the internship, as this is how I plan to improve the AI model and the annotations. Instead of grouping the annotators into Experts and Juniors I suggested that we use a score based system and take into account the opinion of the annotator with the better score. This will be done behind the scenes to ensure that the annotators are not affected by their score, instead they will have to use their expert skills to identify incorrectly pronounced words. This system will ensure that what we are getting the least amount of mis interpreted words by the experts.</p>
+        <figure>
+            <img src="images/board_17_03.png">
+            <figcaption>Image 3 - Sprint Planning board - 16.03.2023</figcaption>
+        </figure>
     </div>
 </body>
 
