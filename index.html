@@ -101,6 +101,8 @@
             <img src="images/board_17_03.png">
             <figcaption>Image 3 - Sprint Planning board - 16.03.2023</figcaption>
         </figure>
+        <h3>17.03.2023 | Bug Fixing</h3>
+        <p>After the sprint planning I went right to work and started trying to reproduce some bugs. What I found is that a lot of the bugs that I was assigned to could not be reproduced. This did not surprise me much as the bugs that were assigned to me were very old up to 1 year, and they might have been fixed. I saw that in some of the descriptions of the issues the CI pipeline was mentioned. Multiple programmers mentioned that it did not load sometimes during the e2e testing. This lead me to believe that the e2e tests were problematic for a very long time. After I fixed the e2e tests a couple of weeks back I haven't seen the pipeline break again, so I suspect that when I applied server pagination I also fixed the e2e tests, as this caused heavy of load on the server and may have caused the CI pipeline to fail a couple of times. I put four bugs in the closed section, I will work on the other ones next week and see if I can actually find a bug that exists in the application from one of the issues.</p>
     </div>
 </body>
 
