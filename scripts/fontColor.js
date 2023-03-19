@@ -1,14 +1,18 @@
-const root = document.querySelector(':root');
-const funBtn = document.getElementById("fn-button");
+const rootElem = document.querySelector(':root');
+const funElem = document.getElementById("fn-button");
+
 const STORAGE_NAME = "font-color";
+const PRIMARY_ATTRIBUTE_NAME = "--primary";
+const MIN = 1;
 
 function changeColor(root) {
     const randColors = ["pink", "violet", "white", "red", "fuchsia", "cyan", "orange", "#4ed842"];
-    const randNumber = Math.floor(Math.random() * 7);
-    const currentColor = root.style.getPropertyValue('--primary');
+    const randNumber = Math.floor(Math.random(1) * (randColors.length - MIN));
+    const currentColor = root.style.getPropertyValue(PRIMARY_ATTRIBUTE_NAME);
     const randomColor = randColors.filter(color => color !== currentColor)[randNumber];
+
     addColorInStorage(randomColor);
-    root.style.setProperty('--primary', randomColor);
+    root.style.setProperty(PRIMARY_ATTRIBUTE_NAME, randomColor);
 }
 
 function addColorInStorage(color) {
@@ -18,8 +22,8 @@ function addColorInStorage(color) {
 function loadColorFromStorage(event) {
     event.preventDefault();
     const loadedColor = localStorage.getItem(STORAGE_NAME);
-    root.style.setProperty('--primary', loadedColor);
+    rootElem.style.setProperty(PRIMARY_ATTRIBUTE_NAME, loadedColor);
 }
 
-funBtn.addEventListener('click', () => changeColor(root));
+funElem.addEventListener('click', () => changeColor(rootElem));
 document.addEventListener("DOMContentLoaded", loadColorFromStorage);
