@@ -31,6 +31,21 @@ b {
     color: aliceblue;
 }
 
+pre {
+    background-color: rgb(32, 31, 31);
+    border: 2px inset rgb(56, 53, 53);
+    border-radius: 4px;
+    color: var(--primary);
+    overflow-x:scroll;
+    display: block;
+    box-shadow: 0px 1px 10px 1px var(--primary);
+    margin-block: 3em;
+}
+
+code{
+    line-height: 2em;
+}
+
 div {
     padding: 5px;
 }

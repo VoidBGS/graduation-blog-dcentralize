@@ -104,6 +104,25 @@
         </figure>
         <h3>17.03.2023 | Bug Fixing</h3>
         <p>After the sprint planning I went right to work and started trying to reproduce some bugs. What I found is that a lot of the bugs that I was assigned to could not be reproduced. This did not surprise me much as the bugs that were assigned to me were very old up to 1 year, and they might have been fixed. I saw that in some of the descriptions of the issues the CI pipeline was mentioned. Multiple programmers mentioned that it did not load sometimes during the e2e testing. This lead me to believe that the e2e tests were problematic for a very long time. After I fixed the e2e tests a couple of weeks back I haven't seen the pipeline break again, so I suspect that when I applied server pagination I also fixed the e2e tests, as this caused heavy of load on the server and may have caused the CI pipeline to fail a couple of times. I put four bugs in the closed section, I will work on the other ones next week and see if I can actually find a bug that exists in the application from one of the issues.</p>
+        <h3>20.03.2023 | Bug: Visiting an annotation from the URL crashes</h3>
+        <p>Some of the bugs that were assigned to me did not exist anymore, but after I tried visiting the annotation URL by using the browser link I saw that it indeed crashed, and the screen remained white. I went on to investigate this bug further and saw that the recording object was not loaded when the URL was entered in the browser. After I tried clicking on the annotation, instead of using the URL it worked. This prompted me to believe that the recording object is being generated and passed down to the annotation page after the link is clicked. This is not optimal as it leads to bugs like this. For this but I decided to look through the code and see if the recording object can be easily fetched by me. I saw that the object was fetched via an API request to the backend. I saw that the colleague that created this made use of <a href="https://redux-saga.js.org/">redux sagas</a>. Redux is a state container and sagas are a way to manage side effect that happen in asynchronous calls. In this case redux makes use of <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*">Generator</a> functions that can be exited an re-enterd in a later point. They eliminate the problem with callbacks and avoid callback hell. I've not used these types of functions and moreover I saw that redux was applied in a lot of folders in the project. The redux that I have used before simply held all the states in one file and one object, but in this project it was way more complex. This is why I decided to save much needed time and I went for a different approach. Instead of fixing the crash by loading the recording object using the ID of the recording that is passed in the URL I decided to check if there is a recording object and if there isn't I redirect the client back to the Dashboard, where they came from. This is good for multiple reasons. The first one is that the clients that will use the application will very rarely use the URL in the first place, they would much rather click on the annotation. Moreover, this implementation saves time, minimizes the risk of bugs and does a good job in handling the problem in the most cost effective way. In the end I fixed this bug by redirecting the user to the Dashboard, if the recording object was not loaded.</p>
+        <pre>
+            <code>
+    try {
+        const {
+        location: {
+            state: { recording },
+        },
+        } = props;
+
+        wavesurfer.current.load(
+        `${process.env.ITSL_APP_API_URL}/recording/${recording}/audio`,
+        );
+    } catch (error) {
+        window.location.href = '/dashboard';
+    }
+            </code>
+        </pre>
     </div>
 </body>
 
