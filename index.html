@@ -106,8 +106,7 @@
         <p>After the sprint planning I went right to work and started trying to reproduce some bugs. What I found is that a lot of the bugs that I was assigned to could not be reproduced. This did not surprise me much as the bugs that were assigned to me were very old up to 1 year, and they might have been fixed. I saw that in some of the descriptions of the issues the CI pipeline was mentioned. Multiple programmers mentioned that it did not load sometimes during the e2e testing. This lead me to believe that the e2e tests were problematic for a very long time. After I fixed the e2e tests a couple of weeks back I haven't seen the pipeline break again, so I suspect that when I applied server pagination I also fixed the e2e tests, as this caused heavy of load on the server and may have caused the CI pipeline to fail a couple of times. I put four bugs in the closed section, I will work on the other ones next week and see if I can actually find a bug that exists in the application from one of the issues.</p>
         <h3>20.03.2023 | Bug: Visiting an annotation from the URL crashes</h3>
         <p>Some of the bugs that were assigned to me did not exist anymore, but after I tried visiting the annotation URL by using the browser link I saw that it indeed crashed, and the screen remained white. I went on to investigate this bug further and saw that the recording object was not loaded when the URL was entered in the browser. After I tried clicking on the annotation, instead of using the URL it worked. This prompted me to believe that the recording object is being generated and passed down to the annotation page after the link is clicked. This is not optimal as it leads to bugs like this. For this but I decided to look through the code and see if the recording object can be easily fetched by me. I saw that the object was fetched via an API request to the backend. I saw that the colleague that created this made use of <a href="https://redux-saga.js.org/">redux sagas</a>. Redux is a state container and sagas are a way to manage side effect that happen in asynchronous calls. In this case redux makes use of <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*">Generator</a> functions that can be exited an re-enterd in a later point. They eliminate the problem with callbacks and avoid callback hell. I've not used these types of functions and moreover I saw that redux was applied in a lot of folders in the project. The redux that I have used before simply held all the states in one file and one object, but in this project it was way more complex. This is why I decided to save much needed time and I went for a different approach. Instead of fixing the crash by loading the recording object using the ID of the recording that is passed in the URL I decided to check if there is a recording object and if there isn't I redirect the client back to the Dashboard, where they came from. This is good for multiple reasons. The first one is that the clients that will use the application will very rarely use the URL in the first place, they would much rather click on the annotation. Moreover, this implementation saves time, minimizes the risk of bugs and does a good job in handling the problem in the most cost effective way. In the end I fixed this bug by redirecting the user to the Dashboard, if the recording object was not loaded.</p>
-        <pre>
-            <code>
+        <pre><code>
     try {
         const {
         location: {
@@ -121,9 +120,33 @@
     } catch (error) {
         window.location.href = '/dashboard';
     }
-            </code>
-        </pre>
+        </code></pre>
+        <h3>21.03.2023 | Bug: Broken SMTP server</h3>
+        <p>One of the other issues the company had was that the SMTP requests always returned an OK code, even when the email was not sent. This is not correct behavior as the application lies to the user that the email has been sent, while in reality it has not. I went to check the code for the <b>send_email()</b> function and saw that there was a <b>try catch</b> block associated with it. Moreover, I saw that in the <b>catch</b> block when an error occured it simply logged in the console that the error existed and that was it. I investigated further and saw that there was not really an email client that was used to sent mail. The only configuration I saw in the <b>config.py</b> file was that a production config, and no mail server in development. This prompted me to think that the email was only used in production and for the actual application there was no email that was being sent or used. This was communicated with Kees the next day.</p>
+        <h3>22.03.2023 | Adding an SMTP server</h3>
+        <p>In the morning standup meeting I told Kees what my findings were and we discussed a solution for this. We decided to use <a href="https://github.com/mailhog/MailHog">Mailhog</a> an email server that is used by developers. This is useful as it does not send email to any address, but it acts like an SMTP server and does not bother anyone while in development. Since I did not know about email servers in detial, as I have set up only two in my three years as I developer I decided to refresh my knowledged and conducted some research on this topic and saw a few video tutorials about how SMTP server were used. I decided to use <b>Docker</b> and I added Mailhog as a container in the <b>docker-compose.yml</b> file.</p>
+        <pre><code>
+    mailhog:
+    image: mailhog/mailhog
+    command: sh -c adduser -D -u 1000 mailhog
+    ports:
+        - "1025:1025"
+        - "8024:8024"
+    networks:
+        main:
+        aliases:
+            - mailhog.itsl        
+        </code></pre>
+        <p>After adding this to the <b>docker-compose.yml</b> file I tested it out and it worked!! Then I ran the <b>pipenv run test</b> command in my project's virtual environment and there was something wrong (of course!) and I had to see what. I was getting an OS exception when running the unit tests and the word <b>port</b> was mentioned, this immediately prompted me to check if something is blocking the port where my mail server was running on. I saw that in the tests they make use of ANOTHER mail server that is especially designed to run in unit tests, but surprise surprise it ran exactly on port <b>8025</b>, where my email server was running on. I had an easy solution to this though, I went to the <b>docker-compose.yml</b> file and specified that I wanted Mailhog to run on port <b>8024</b>. After I ran the tests again there was not problems. I added my changes and pushed to the remote repo in the new branch that I created. I received a linting error, and at this point we were using three seperate linters for the backend so I just decided to make my life easy and I created an shell file that ran all the linters in one go, so I don't repeat the same mistake or run all linters one by one. This is how my shell file looked like.</p>
+        <pre><code>
+    #!/bin/bash
+    pipenv run black .
+    pipenv run flake8 .
+    pipenv run pylint --rcfile=.pylintrc --enable spelling itsannotate/*.py
+        </code></pre>
+        <p>Hopefully, this will prevent linting problems. But oh no the CI pipeline failed, and this time the unit tests the problem. I went to see what was wrong and saw that I forgot to add the image to the <b>.gitlab-ci.yml</b> file. After adding mailhog to the CI services section I ran the tests again and they failed... again. But this time it was a different error. Well kind of different, it was the port issue again. I saw that the other mail server used in the unit tests (<a href="https://pypi.org/project/smtpdfix/">smtpdfix</a>) still conflicted with mailhog. This time the problem was not so easy to solve as the image that is pulled from the dockerhub is located in the CI pipeline and not the compose file. This is why I decided to ask my mentor for directions the next day...</p>
+        <h3>23.03.2023 | Finishing SMTP touches</h3>
+        <p>In the daily standup I shared my troubles with my mentor - Kees, and he gave me an idea to use the remote URL to out own Mailhog server hosted in the office. I obliged and I chagned the <b>SMTP_SERVER</b> variable in the <b>config.py</b> file. To my surprise it did not work. I pondered a little and saw that the mail was not being sent at all. At first I thought it was a permissoin issue, and I might have needed a password for the server, but after checking for a bit I saw that I've forgotten to add a username... Anyways, after adding the username I successfully sent the email and I pushed the changes. This time everything worked fine and the tests passed. Marking this fix as done. Since the day was not really done I decided to move to another issue - The removal of the Expert annotator. This issue is part of my assignment goal - to try and improve the capabilites of the AI model by improving the input of the annotators. I belive that removing the expert annotator role and focusing on a score would be a much more beneficial system to train the AI with. Anyways, I started as always by researching and seeing how the expert annotator is being used in the application. That's what I did basically for the whole day.</p>
     </div>
 </body>
-
 </html>
