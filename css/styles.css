@@ -36,7 +36,7 @@ pre {
     border: 2px inset rgb(56, 53, 53);
     border-radius: 4px;
     color: var(--primary);
-    overflow-x:scroll;
+    overflow-x: auto;
     display: block;
     box-shadow: 0px 1px 10px 1px var(--primary);
     margin-block: 3em;
