@@ -1,11 +1,12 @@
 const scrollButtonElem = document.getElementById("fast-scroll");
 const scrollLinkElem = document.getElementById("blog_scroll");
 const blogElem = document.getElementById("blog");
+const aDeepElem = document.getElementById("blog_deep");
 
 const SCROLL_TRIGGER = 300;
-const OPTIONS = {block:"start", behavior: "smooth"}
 
-const smoothScroll = (event, element) => {
+const smoothScroll = (event, element, block) => {
+    const OPTIONS = {block: block, behavior: "smooth"};
     event?.preventDefault();
     element?.scrollIntoView(OPTIONS);
 }
@@ -18,6 +19,7 @@ const handleWindowScroll = (event) => {
         scrollButtonElem.style.right = "-20em";
 }
 
-scrollButtonElem.addEventListener('click', (event) => smoothScroll(event, document.body));
-scrollLinkElem.addEventListener("click", (event) => smoothScroll(event, blogElem));
+scrollButtonElem.addEventListener("click", (event) => smoothScroll(event, document.body, "start"));
+scrollLinkElem.addEventListener("click", (event) => smoothScroll(event, blogElem, "start"));
+aDeepElem.addEventListener("click", (event) => smoothScroll(event, blogElem, "end"));
 window.addEventListener("scroll", handleWindowScroll);
