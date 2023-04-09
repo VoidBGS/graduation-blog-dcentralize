@@ -176,13 +176,15 @@
         raise ex
         </code></pre>
         <p>Pay attention to the <b># noga</b> comment. This means that the linter tools that we have in the backend skip this line when they see this comment. This is because a lot of the existing linter tools do not allow general exceptions, since they impact code readability. These lines won't be needed after I am done with the code. Below is how I changed this particular line of code.</p>
-        <pre><code>
+        <pre>
+            <code>
     try:
         smtp.send_message(msg)
     except smtplib.SMTPException as ex:
         logging.warning(f"SMTP Exception: {ex}")
         raise ex
-        </code></pre>
+            </code>
+        </pre>
         <h3>28.03.2023 | End of Sprint 4 - Sprint Delivery and Planning</h3>
         <p>I've reached the end of this sprint! This means that today we are going to have a sprint retrospective and discuss what happened during the last two weeks. We are going to listen to each other and maybe see what each of us has accomplished this sprint. After this is done we can move on to Sprint Planning and we will plan issues for the next sprint. Currently I have completed all my issues this sprint and I will need to see if there are any comments on them, if there are I will first need to make sure that the comments are resolved and that everything is taken care of before going into the next sprint. I will go over the issues I have completed in the list below with their issue numbers in GitLab.</p>
         <ul>
@@ -200,10 +202,51 @@
         <p>My mentor took a lot at the code for frontend linting and saw that there were an issue that I forgot to address. I saw that there was a file with a incorrect path set in the changes that I pushed whiled applying the frontend linting. I saw that all I needed to change was one line directing to a certain component. I applied this changed and pushed the code to master. But disaster struck, I had forgotten to merge master into my branch before pushing, this meant that the new linting that I applied caused the new changes that came AFTER it to crash, I saw this while checking the CI pipeline, but the change was done already. So now I had to create another Issue to address this mistake and fix the linting issues that occured in master.</p>
         <h3>30.03.2023 | Mailing issues</h3>
         <p>After the meeting we had on Tuesday Kees shared that he would prefer the email to no be connected to the remote mailing server, instead he wanted it to be a docker image. I explained that since we are already using a mock email server in the unit tests we cannot use the <b>mailhog</b> image form the CI pipeline, as the docker image in the pipeline uses the same port mapping as the <b>smtpdfix</b> Python package we are using for the unit tests. He showed me one page that let me configure the variables of <b>Mailhog</b>, but I was not certain how to configure the variables of an image insite a GitLab CI pipeline, he explained that you can set the environmental variables from the CI, if you supply the <b>variables</b> extension command in the <b>.gitlab-ci.yml</b> file. I took his word for it and tried this, I supplied the needed variables and tested it. I saw that this did not work as you cannot map the ports and open them so they can be used by the unit tests, without having access to the <b>port</b> comman Docker offers. I tried other tricks to make this work, but whatever I did it was futile. I could not make it work whatever I tried, so I just decided that I will postpone this for Monday and work on another task more closely associated with the goal of my internship.</p>
-        <h3>31.03.2023 | More specific annotations round two</h3>
-        <p>I tackled this issue before, but Kees told me that he would also like to see tests associated with the new error handling that I implemented to avoid general exceptions. I saw from the merge requests which lines were not tested properly and I went to update them. I started with the annotation exception handling and I created two tests for it. After this I moved to the exception catch for the database and I saw that some of the errors that I used were incorrectly added, and I had to be more specific about the error class that is being used <b>DataError</b> was located inside the <b>sqlalchemy.exc</b> class and I had to make sure I imported that correctly, so this is where the unit tests I wrote actually benefited me. I moved on two create a couple more tests and I pushed my commit, hopefully it will go well this time and it will accepted.</p>
-        <h3>01.04.2023 | </h3>
-        <p>SOON TO BE ADDED</p>
+        <h3>31.03.2023 | More specific exceptions round two</h3>
+        <p>This seems familiar, I tackled this issue before, but Kees told me that he would also like to see tests associated with the new error handling that I implemented to avoid general exceptions. I saw from the merge requests which lines were not tested properly and I went to update them. I started with the annotation exception handling and I created two tests for it. After this I moved to the exception catch for the database and I saw that some of the errors that I used were incorrectly added, and I had to be more specific about the error class that is being used <b>DataError</b> was located inside the <b>sqlalchemy.exc</b> class and I had to make sure I imported that correctly, so this is where the unit tests I wrote actually benefited me. I moved on two create a couple more tests and I pushed my commit, hopefully it will go well this time and it will accepted.</p>
+        <h3>03.04.2023 | Using its-api as a backend service inside the CI Container</h3>
+        <p>I was given the very important tast of making the annotator tool use the its-api image in the CI pipeline, currently as it stands the CI pipeline uses the remote its-api image, that is hosted on d-centralize's servers. We decided to instead focus on providing this functionality as a seperate docker image that is running inside the CI pipeline. This will decrease the load of the server and it will enable the use of a local image, that is built on the fly instead of relying on the remote host. I approached this issue by reviewing how the its-api project worked as an image. For this I messaged the maintainer of the its-api image - Redmar. I breifly spoke with him and he guided me how other projects make use of this as a local container, instead of a remote. He suggested a simple fix, adding this in the CI pipeline</p>
+        <pre>
+            <code>
+    services: 
+    - name: [TOP SECRET]
+        alias: its_api.itsl
+        variables:
+        ITS_API_PORT: 5100
+    variables:
+    ITS_API_URL: "http://its_api.itsl:5100"            
+            </code>
+        </pre>
+        <p>This piece of code should enable me to use the api as a seperate container rather than relying on the remote host. Hopefully!</p>
+        <h3>04.04.2023 | Trying to fix the unfixable email tests</h3>
+        <p>Today I tackled the emailing issue again. This time it was a new error that popped out. I managed to set the port correctly this time, but for some reason the other mock emailing library <b>smtpfix</b> did not want to work with me again in fixing this issue. This time a new error popped up - <b>Must issue a STARTTLS command first</b></p>
+        <h3>05.04.2023 | Tackling database migrations</h3>
+        <p>The job of removing the expert annotator was almost done. One last thing was left until I could call mark that as completed, and that was adding the database migrations that removed the <b>EXPERT_ANNOTATOR</b> role from the whole database and instead adds just the <b>ANNOTATOR</b> role. This could have been easier for a person with database migration experience. I for once did not possess that skill and I had to learn quickly if I wanted to get the task completed. I first started by reading the past migrations and how they were written. I read which library did what and I also read the <b>Alembic</b> documentation, just to get the feel of how the whole migration thing works. The reason for me having less experience with db migrations is that profesionally I worke mostly with MySQL and plain old PHP, which, for better or worse, did not require me to write database migrations like these here. The only thing that came close to me knowing how to properly perform a migration was back in semester 2 when I worked in <a href="https://laravel.com/">Laravel</a> for my website. After that I wrote only SQL and had experience with that.</p>
+        <p>ANYWAY. After I read the documentation I went straight to work and wrote my SQL query that I thought was going to work </p>
+        <pre>
+            <code>
+    user = '"user"'
+    role = '"role"'
+    op.execute(f"UPDATE {user} SET {role} = 'ANNOTATOR' WHERE {role} = 'EXPERT_ANNOTATOR'")        
+            </code>
+        </pre>
+        <p>SQL wise, this seemed like a correct statement but it just did not work. It raised a weird error about the statement being incorrect, even though I tested it with the local db connection and it worked properly. I tried fixing it for a couple of hours and then when I failed, I called it a day and told myself that I will do it tomorrow. This task is part of my main task, which is improving the AI system by adding a better way to score the annotators and taking the opinion of the better scored annotators first.</p>
+        <h3>06.04.2023 | Migration master</h3>
+        <p>I managed to fix the migration issue I was having. I decided to change the way I think about migrations, and instead of focusing on the SQL side of things I decided a better way would be if I set the users as objects and loop through them, changing the role form <b>EXPERT_ANNOTATOR</b> to <b>ANNOTATOR</b>, I managed to think of this idea when looking through the older migration files. I saw that most of them did not really include a lot of SQL and the queries that were there had some loops in them. I created this code and it worked!</p>
+        <pre>
+            <code>
+    user_col = '"user"'
+    connection = op.get_bind()
+    users = connection.execute(f"SELECT * FROM {user_col};").fetchall()
+
+    for user in users:
+        if (user.role == "EXPERT_ANNOTATOR"):
+            connection.execute(f"UPDATE {user_col} SET role='ANNOTATOR' WHERE id={user.id};")
+            </code>
+        </pre>
+        <p><b>user_col = '"user"'</b> assigns the string <b>"user"</b> to the variable <b>user_col</b>, with double quotes around it. This is likely done to ensure that if the variable is used in an SQL query, the query is properly formatted. <b>connection = op.get_bind()</b> establishes a connection to the database. <b>users = connection.execute(f"SELECT * FROM {user_col};").fetchall()</b> executes an SQL query that selects all rows from a table named <b>"user"</b> (which is what <b>user_col</b> refers to), and returns them as a list of tuples. Each tuple represents a row, and each element of the tuple represents a column in the row. The for loop iterates over each tuple in users. <b>if (user.role == "EXPERT_ANNOTATOR")</b> checks whether the role column of the current tuple (i.e., user.role) is equal to the string <b>"EXPERT_ANNOTATOR"</b>. If the condition in step 5 is true, the <b>connection.execute()</b> method is called with a new SQL query as its argument. This query updates the role column of the same row (identified by user.id) to <b>"ANNOTATOR"</b>. This effectively changes the role of expert annotators to regular annotators in the database.</p>
+        <h3>07.04.2023 | Email conclusion?! Maybe...</h3>
+        <p>This morning I saw that Kees left an interesting comment in my email issue, that I was working on for almost two weeks now. He suggested that we could outright remove <b>smtdfix</b>. I wanted to avoid this option because a lot of the email tests are connected to this library and this is how we mainly test the email service right now. This is an interesting proposition that I looked into and I saw that it could happend, but It would probably take a bit of time to setup properly, we will see how I can work on this next week. For now I will focus on researching the connection to the its-cms and the annotator tool.</p>
     </div>
 </body>
 </html>
