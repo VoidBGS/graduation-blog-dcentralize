@@ -1,2 +1,2 @@
 # graduation-blog-dcentralize
-Just a blog
+Portfolio website and blog.
