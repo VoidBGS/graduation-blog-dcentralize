@@ -6,13 +6,15 @@ const aDeepElem = document.getElementById("blog_deep");
 const SCROLL_TRIGGER = 300;
 
 const smoothScroll = (event, element, block) => {
+    event.preventDefault();
+
     const OPTIONS = {block: block, behavior: "smooth"};
-    event?.preventDefault();
-    element?.scrollIntoView(OPTIONS);
+    element.scrollIntoView(OPTIONS);
 }
 
 const handleWindowScroll = (event) => {
     event.preventDefault();
+    
     if (window.scrollY > SCROLL_TRIGGER)
         scrollButtonElem.style.right = "1em";
     else

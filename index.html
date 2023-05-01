@@ -432,6 +432,53 @@
         <p>As you can see this is not optimal for user experience, and it would not be practical to send this into production. Instead, I focused on improving it, while also keeping the original style of the page. I decided to use checkboxes and made it work. This is how the final design looked like in the end.</p>
         <img src="images/roles_new.png" class="m-img">
         <p>I realize that this would not be optimal if there were a lot of roles, but the plan is not to have any more roles for this tool and three roles are enough for everything. I call this avoiding <a href="https://stackify.com/premature-optimization-evil/">premature optimization</a> as it is the root of all evil! Or something...</p>
+        <h3>24.04.2023 | Sprint delivery prep</h3>
+        <p>Today I spent most of my day making sure that the changes from last week were ready for the sprint delivery we are having tomorrow. We also met with my university tutor as part of our fortnightly meeting, with the other group members as well. We discussed how our week went and the presentation we had last week for the mid term. From what I received as feedback everything was alright with my presentation, but I will still try to improve the content of it. I was thinking of adding more information about the way of work in the company, as I think I skipped that, although it might not be necessary.</p>
+        <h3>25.04.2023 | Sprint retrospective with the team</h3>
+        <p>During the sprint retrospective today I presented the solution I had for the addition of the external annotator role in the frontend. I showcased my design to the team and how I envisioned the multiple roles looking in the frontend. After my demo we moved on to the discussion about the things that went right in the Sprint (happy cat) and also the things that went wrong (sad cat). For me this sprint was a happy cat, as I managed to finish almost all my tasks and brought the project to a good level. Below are some of the things that I managed to do during this sprint, contributing to my goal of improving the Annotator tool.</p>
+        <ul>
+            <li>Testing and making the connection to Loudly sound trainer <> its-annotate</li>
+            <li>Fully implement and test Annotation difference system</li>
+            <li>Addition of the external annotator</li>
+        </ul>
+        <h3>26.04.2023 | Complete removal of the expert annotator role</h3>
+        <p>After the pair programming session with Nikita I realized that I had to refactor the migration code that removed the expert annotator from the previous sprint as I had missed a very important piece of code that actually removes the <b>EXPERT_ANNOTATOR</b> from the <b>userrole</b> enum in the postgre database. When I removed the expert annotator I did thought that the renaming of the roles of the users was going to be enough and I had not thought about the <b>userrole</b> enum that existed within the database. I went to refactor the code and in the end it looked something like this.</p>
+        <pre><code>
+        def upgrade():
+            role_enum = pgsql.ENUM(
+                "ADMIN",
+                "ANNOTATOR",
+                name="userrole",
+                create_type=False,
+            )
+
+            op.alter_column(
+                "user",
+                "role",
+                existing_type=role_enum
+            )
+
+            user_col = '"user"'
+            role_col = '"role"'
+            connection = op.get_bind()
+            users = connection.execute(f"SELECT * FROM {user_col};").fetchall()
+
+            for user in users:
+                if (user.role == "EXPERT_ANNOTATOR"):
+                    connection.execute(f"UPDATE {user_col} SET role='ANNOTATOR' WHERE id={user.id};")
+            connection.execute("CREATE TYPE userrole_new AS ENUM ('ADMIN', 'ANNOTATOR');")
+            connection.execute(f"ALTER TABLE {user_col} ALTER COLUMN {role_col} TYPE userrole_new USING ({role_col}::text::userrole_new);")
+            connection.execute("DROP TYPE userrole;")
+            connection.execute("ALTER TYPE userrole_new RENAME TO userrole;")
+
+
+        def downgrade():
+            return
+        </code></pre>
+        <h3>27.04.2023 | CI pipeline for AI training</h3>
+        <p>We met with David today and we spoke about the data he would like for the AI model he is creating. He is also a Fontys intern, but he is in semester 5. He informed me that he is working on a model that is able to recognize sounds in spoken lanugage and he mentioned the type of data he needed. Currently the sound files are saved as <b>.wav</b> files and another type of file was necessary. Not only that, but we should also think about the way the annotations are saved in the file system (probably in JSON format) and how we can use that. I started researching this.</p>
+        <h3>28.04.2023 | Sprint planning with Kees</h3>
+        <p>As most of my tasks were completed this sprint we had a sprint planning with Kees, and we spoke about the tasks that I managed to complete and went over some of the more important topics that neede to be implemented like annotator score and the AI CI pipeline that is required for the AI training. We went over those topics and discussed them for some time. After that we started creating the tasks for the next sprint and we agreed that I would describe the issues in more detail in their respective sections in GitLab so he is well informed. I also spoke to him about the communication between us as he gave me feedback that he wanted to see a bit more from me in that area. I made sure to write down what he said and I will try to acheive that level of communication during this and future Sprints.</p>
     </div>
 </body>
 </html>
