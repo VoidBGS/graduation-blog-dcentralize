@@ -428,9 +428,15 @@
         <p>We did the backend yesterday, now it is time for the frontend, this time I will be going alone. I have two main things to fix, the first one if that the multiple roles are not seperated by a <b>,</b> instead they are combined together just like <b>ANNOTATOREXTERNAL_ASSIGNMENT_ASSESSOR</b>, instead of <b>ANNOTATOR, EXTERNAL_ASSIGNMENT_ASSESSOR</b>. I fixed simply by adding a <b>{ value }) => value && value.join(', ')</b> at the mapping feature.</p>
         <h3>21.04.2023 | Checkbox and multiple roles selection</h3>
         <p>After trying to do it yesterday and failing. I managed to think of a way to implement the addition of multiple roles, by using the update modal located in the admin control panel. The initial state of this featured just a field with multiple roles and you needed to select roles using "SHIFT + LEFT CLICK", this was done solely for development and it needed to be changed. I spent a lot of time wondering how this should look like, as it needed to match the style of the company. The last this I decided upon was to use checkboxes and let the user select the roles they needed. This is a picture of how it looked like in the beginning.</p>
-        <img src="images/roles_old.png" class="m-img">
+        <figure>         
+            <img src="images/roles_old.png" class="m-img">
+            <figcaption>Image 4 - Roles old.</figcaption>
+        </figure>
         <p>As you can see this is not optimal for user experience, and it would not be practical to send this into production. Instead, I focused on improving it, while also keeping the original style of the page. I decided to use checkboxes and made it work. This is how the final design looked like in the end.</p>
-        <img src="images/roles_new.png" class="m-img">
+        <figure> 
+            <img src="images/roles_new.png" class="m-img">
+            <figcaption>Image 5 - Roles new.</figcaption>
+        </figure>
         <p>I realize that this would not be optimal if there were a lot of roles, but the plan is not to have any more roles for this tool and three roles are enough for everything. I call this avoiding <a href="https://stackify.com/premature-optimization-evil/">premature optimization</a> as it is the root of all evil! Or something...</p>
         <h3>24.04.2023 | Sprint delivery prep</h3>
         <p>Today I spent most of my day making sure that the changes from last week were ready for the sprint delivery we are having tomorrow. We also met with my university tutor as part of our fortnightly meeting, with the other group members as well. We discussed how our week went and the presentation we had last week for the mid term. From what I received as feedback everything was alright with my presentation, but I will still try to improve the content of it. I was thinking of adding more information about the way of work in the company, as I think I skipped that, although it might not be necessary.</p>
