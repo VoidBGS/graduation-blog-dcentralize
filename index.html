@@ -189,14 +189,14 @@
         <p>I've reached the end of this sprint! This means that today we are going to have a sprint retrospective and discuss what happened during the last two weeks. We are going to listen to each other and maybe see what each of us has accomplished this sprint. After this is done we can move on to Sprint Planning and we will plan issues for the next sprint. Currently I have completed all my issues this sprint and I will need to see if there are any comments on them, if there are I will first need to make sure that the comments are resolved and that everything is taken care of before going into the next sprint. I will go over the issues I have completed in the list below with their issue numbers in GitLab.</p>
         <ul>
             <li>#150 | Introduction of the expert annotator</li>
+            <li>#208 | Checkbox does not click in Cypress</li>
             <li>#210 | Exception handling should be more specific</li>
             <li>#256 | Return an error status when sending an email fails</li>
-            <li>#299 | Visiting the annotate page from the url crashes</li>
-            <li>#307 | Changing not saved annotations</li>
-            <li>#208 | Checkbox does not click in Cypress</li>
             <li>#267 | Sometimes recordings don't load on the assignment page</li>
-            <li>#310 | Starting a region in an other region</li>
+            <li>#299 | Visiting the annotate page from the URL crashes</li>
+            <li>#307 | Changing not saved annotations</li>
             <li>#309 | Regions without labels</li>
+            <li>#310 | Starting a region in another region</li>
         </ul>
         <h3>29.03.2023 | Frontend linting finishing touches</h3>
         <p>My mentor took a lot at the code for frontend linting and saw that there were an issue that I forgot to address. I saw that there was a file with a incorrect path set in the changes that I pushed whiled applying the frontend linting. I saw that all I needed to change was one line directing to a certain component. I applied this changed and pushed the code to master. But disaster struck, I had forgotten to merge master into my branch before pushing, this meant that the new linting that I applied caused the new changes that came AFTER it to crash, I saw this while checking the CI pipeline, but the change was done already. So now I had to create another Issue to address this mistake and fix the linting issues that occured in master.</p>
@@ -258,7 +258,6 @@
             <li>#327 | Secure external endpoints</li>
             <li>#306 | BUG - Changed saved annotations</li>
             <li>#210 | Exception handling should be more specific</li>
-            <li>#150 | Removed expert annotator role</li>
         </ul>
         <h3>13.04.2023 | Sprint planning with Kees</h3>
         <p>After the retrospective on Tuesday I spoke with Kees about having a sprint planning for the Annotator tool, he obliged and after the daily morning meeting we had a planning session where we discussed what issues we needed to focus on during this sprint. Overall, we planned to make sure a lot of the already implemented technologies worked as expected, as we are going to release one of the products soon and we need to make sure there won't be any (or at least too many) bugs in the system connections. My goals for the internship also slightly changed, for this month I have to make sure that the connections between the systems are stable and that data is flowing between them. Next month I will be working on the creation of a new pipeline that will feed a brand new AI speech model data from the annotator tool.</p>
@@ -496,15 +495,35 @@
         <h3>05.05.2023 | Wireframes and Design</h3>
         <p>For the <b>Adding more detailed annotations</b> issue I decided to use <a href="https://www.figma.com/">Figma</a> and created a prototype to the sketch that Kees and I created during our planning session. The sketch looked something like this:</p>
         <figure> 
-            <img src="images/mockup.png" class="m-img">
+            <img src="images/mockup.png">
             <figcaption>Image 6 - Planning Sketch.</figcaption>
         </figure>
         <p>This is the crude sketch that was made by Kees and I. As you can see the first iteration of it has a <b>SAVE</b> button, which does not fit well with the application. My idea would be to simplify this process and get rid of the <b>SAVE</b> button. As of this moment I am not certain how the KAT tool works, but when we were planning this with Kees, he suggested that the best course of action would be to use the KAT tool to split up the word AFTER the annotator has clicked on it. So I made this figma mockup:</p>
         <figure> 
-            <img src="images/figma.png" class="m-img">
+            <img src="images/figma.png">
             <figcaption>Image 7 - Figma Mockup.</figcaption>
         </figure>
         <p>I chose this design, because it is the most user-friendly option in my opinion. There is only one button and that is for closing, after the annotation is complete. The removal of the annotation can be done the normal way, using the general delete commands. This design can ensure that the annotators are capable of having more detailed annotations and this can also help improve the AI model. </p>
+        <h3>08.05.2023 | Wireframes and Design 2</h3>
+        <p>After our meeting with Kees I worked on the design, and decided to simplify it even further, so that the annotators do not get confused with numerous buttons. Instead, I focused on just showcasing the different sounds that are in the words and selecting their position in the sound file, hopefully KAT can give me this functionality. This is still a design that is not set in stone, as I am uncertain to the capabilities and limitations of the KAT tool. <a href="https://www.figma.com/file/D2Adla0jpAiZV3TfLqWTRv/Detailed-Annotations?type=design&node-id=0%3A1&t=z4kLAesjSnW42PSO-1">Link to the prototype</a> I also had a meeting with David, we shared the same opinions when it came to this design, we both liked it but we had our doubts that it can work this way as we don't know what the KAT tool is capable of. Is it capable of exactly pinpointing the sounds so that we can showcase it to the annotators, or does it work a bit more simplistic in a way that separates the word into a chunk of sounds.</p>
+        <h3>09.05.2023 | Sprint retrospective with the team</h3>
+        <p>I presented my new mockup of the detailed annotations topic and also the other issues I manage to handle this Sprint. I managed to further improve the web application and I also started working on the more detailed annotations, this will help the AI model and improve scoring once it is complete. I received some feedback on the design mockup and I had to change the way I thought about what was needed. The thing that we needed more is getting the phonetics right of the words and letting the annotators be able to make more detailed annotations. The design that I planned was not really based in reality and it is almost impossible to exactly pinpoint where the sounds of the word are using KAT tool. This is why I decided to start the creation of a new mockup after the spint delivery. These are some of the issues that I handled this sprint:</p>
+        <ul>
+            <li>#256 | Return an error status when sending an email fails</li>
+            <li>#278 | Login / Login as user sometimes doesn't work on review</li>
+            <li>#329 | Follow-up from "fix: extending page"</li>
+            <li>#355 | Resolve "Create a cronjob for automated assignment creation"</li>
+            <li>#359 | Remove expert annotator from manual</li>
+            <li>#361 | Cleanup outdated merge requests</li>
+        </ul>
+        <h3>11.05.2023 | Sprint Planning with Kees</h3>
+        <p>We had a sprint planning with Kees, I communicated with him about what was going on with my studies and I told him what direction I wanted to take in the internship, as I still had an issue that were not connected with what my goals were. We deleted the issue and we planned to work on only two bigger issues - <b>Add more detailed annotations</b> and <b>Loudly to its-annotate connection</b>. I've already started working on the more detailed annotations and I have been working on another mockup.</p>
+        <h3>12.05.2023 | Finishing up the new mockup</h3>
+        <p>I created the newest version of the design mockup for the <b>More detailed annotations</b> issue that I am assigned to. Last time the design that I submitted was not possible with the technologies we have, and during the planning with Kees I made sure to go into more details and made sure to get the correct information once more. This is the design I thought of:</p>
+        <figure> 
+            <img src="images/figmaNewMockup.png">
+            <figcaption>Image 8 - New Figma Mockup.</figcaption>
+        </figure>
     </div>
 </body>
 </html>
