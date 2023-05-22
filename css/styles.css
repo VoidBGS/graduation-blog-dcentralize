@@ -8,6 +8,7 @@ body {
     background-color: var(--background);
     color: var(--primary);
     padding-inline: 15em;
+    overflow-y: scroll;
 }
 
 * {
@@ -120,6 +121,47 @@ figcaption {
     animation: scroll-left 20s linear infinite;
 }
 
+.collapsable {
+    position: relative;
+    background-color:rgb(18, 18, 18);
+    color: var(--primary);
+    border: 0;
+    margin-block: 3em;
+    width: 100%;
+    padding: 10px;
+    padding-block: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 150ms;
+    font-weight: 700;
+    font-size: 1rem;
+    box-shadow: var(--primary) 0px 2px 8px 0px;
+}
+
+.collapsable:hover {
+    background-color:rgb(20, 20, 21);
+    box-shadow: var(--primary) 0px 18px 50px -10px;
+}
+
+/* .collapsable::after {
+    content: '\263A';
+    color: var(--primary);
+    font-weight: bold;
+    position: absolute;
+    margin-left: 3px;
+    margin-bottom: 3px;
+} */
+
+.active {
+    box-shadow: var(--primary) 0px 18px 50px -10px;
+}  
+
+.content{
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.8s ease-in;
+}
+
 #UP {
     user-select: none;
     font-size: 1.2rem;
@@ -154,9 +196,12 @@ figcaption {
 }
 
 #fn-button {
-    background-color: var(--primary);
-    font-weight: bold;
-    border-radius: 3px;
+    background-color: transparent;
+    color: var(--primary);
+    border-radius: 5px;
+    border:0;
+    width: 100%;
+    font-size: 1.1rem;
 }
 
 @-moz-keyframes scroll-left {

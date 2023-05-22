@@ -4,26 +4,25 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A custom blog made for university">
+    <meta name="author" content="Kristian Lachev">
     <title>Portfolio of Kristian Lachev</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <script src="scripts/collapsableContent.js" defer></script> 
     <script src="scripts/fontColor.js" defer></script> 
     <script src="scripts/smoothScroll.js" defer></script> 
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
 </head>
 
 <body>
     <h1 class="text-center">Portfolio</h1>
+    <button id="fn-button">&#9835;</button>
     <div class="marquee"><p>01001001 01101110 01110100 01100101 01110010 01100101 01110011 01110100 01101001 01101110 01100111 00101110 00101110 00101110</p></div>
     <div id="fast-scroll">
         <p id="UP">UP</p>
     </div>
-    <span>
-        <a href="#blog" id="blog_scroll">> Jump to the blog</a>
-        <a href="#blog" id="blog_deep">> Jump in the deep end</a>
-
-        <button id="fn-button">Fun Button</button>
-    </span>
-    <div id="about">
+    <button class="collapsable">Project Report</button>
+    <div id="about" class="content">
         <h2>Project Report</h2>
         <h3>Introduction > Myself</h3>
         <p> My name is Kristian Lachev, I am a twenty three year old student at Fontys university. This is my fourth year as a Fontys student. I have been through and managed to complete all the challanges that were given to me by the university. In completing those challanges I have grown not only as a developer, but also as a person who is able to think critically and operate confidently in professional environments.</p>
@@ -75,8 +74,11 @@
         <h5>7. Conclusion</h5>
         <p> In conclusion, adopting best practices for TypeScript development in ReactJS can greatly enhance the reliability, maintainability, and performance of frontend code. TypeScript's type safety features provide early error detection and improved collaboration among developers. Prioritizing code readability and maintainability through consistent naming conventions, linting tools, and documentation enhances the overall development process. Component-based architecture promotes code reusability and scalability, while performance optimization techniques ensure efficient application performance. Testing and quality assurance practices, including unit testing and high test coverage, contribute to code stability and reliability. By incorporating these best practices into the software development process, developers can build robust, maintainable, and high-quality ReactJS applications.</p>
     </div>
-    <div id="blog">
+    <button class="collapsable">Blog and Professional products</button>
+    <div id="blog" class="content">
         <h2>Blog and Professional products</h2>
+        <a href="#blog" id="blog_scroll">> Jump to the blog</a>
+        <a href="#blog" id="blog_deep">> Jump in the deep end</a>
         <h3>06.02.2023 | My first day in the company</h3>
         <p>My first day in the company went smooth. I received my company email, I used the email to log into all my newly created accounts and I gained access to the GitLab repository of the project that I will work on. I made some tasks for the day and I explored the annotator tool. I started by fixing some typos in the Readme.md file. This very simple step enabled me to learn the process of how the branching process is done in the company and how different issues are handled. After fixing some of the typos I went ahead to run the annotator tool locally.</p>
         <h3>07.02.2023 | Getting to know the company | Identifying problems</h3>
@@ -564,5 +566,7 @@
             <figcaption>Image 8 - New Figma Mockup.</figcaption>
         </figure>
     </div>
+    <button class="collapsable">Conclusion and Recommendations</button>
+    <button class="collapsable">Personal Reflection</button>
 </body>
 </html>

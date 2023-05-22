@@ -1,4 +1,4 @@
-const rootElem = document.querySelector(':root');
+const rootElem = document.querySelector(":root");
 const funElem = document.getElementById("fn-button");
 
 const STORAGE_NAME = "font-color";
@@ -27,5 +27,5 @@ function loadColorFromStorage(event) {
     rootElem.style.setProperty(PRIMARY_ATTRIBUTE_NAME, loadedColor);
 }
 
-funElem.addEventListener('click', () => changeColor(rootElem));
+funElem.addEventListener("click", () => changeColor(rootElem));
 document.addEventListener("DOMContentLoaded", loadColorFromStorage);
