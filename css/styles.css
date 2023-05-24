@@ -91,7 +91,7 @@ figcaption {
 }
 
 .m-img{
-    width: 40em;
+    max-width: 100%;
 }
 
 .text-center {
@@ -115,10 +115,10 @@ figcaption {
     text-align: center;
     -moz-transform: translateX(100%);
     -webkit-transform: translateX(100%);
-    transform: translateX(100%);
     -moz-animation: scroll-left 2s linear infinite;
     -webkit-animation: scroll-left 2s linear infinite;
     animation: scroll-left 20s linear infinite;
+    transform: translateX(100%);
 }
 
 .collapsable {
@@ -126,7 +126,7 @@ figcaption {
     background-color:rgb(18, 18, 18);
     color: var(--primary);
     border: 0;
-    margin-block: 3em;
+    margin-block: 0.7em;
     width: 100%;
     padding: 10px;
     padding-block: 20px;
@@ -143,15 +143,6 @@ figcaption {
     box-shadow: var(--primary) 0px 18px 50px -10px;
 }
 
-/* .collapsable::after {
-    content: '\263A';
-    color: var(--primary);
-    font-weight: bold;
-    position: absolute;
-    margin-left: 3px;
-    margin-bottom: 3px;
-} */
-
 .active {
     box-shadow: var(--primary) 0px 18px 50px -10px;
 }  
@@ -159,7 +150,7 @@ figcaption {
 .content{
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.8s ease-in;
+    transition: max-height 50ms ease-in;
 }
 
 #UP {
@@ -246,9 +237,5 @@ figcaption {
     #fn-button {
         margin-top: 1em;
         width: 100%;
-    }
-
-    figure {
-        display: none;
     }
 }

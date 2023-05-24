@@ -16,7 +16,7 @@
 
 <body>
     <h1 class="text-center">Portfolio</h1>
-    <button id="fn-button">&#9835;</button>
+    <button id="fn-button">&#9787;</button>
     <div class="marquee"><p>01001001 01101110 01110100 01100101 01110010 01100101 01110011 01110100 01101001 01101110 01100111 00101110 00101110 00101110</p></div>
     <div id="fast-scroll">
         <p id="UP">UP</p>
@@ -75,9 +75,8 @@
         <p> In conclusion, adopting best practices for TypeScript development in ReactJS can greatly enhance the reliability, maintainability, and performance of frontend code. TypeScript's type safety features provide early error detection and improved collaboration among developers. Prioritizing code readability and maintainability through consistent naming conventions, linting tools, and documentation enhances the overall development process. Component-based architecture promotes code reusability and scalability, while performance optimization techniques ensure efficient application performance. Testing and quality assurance practices, including unit testing and high test coverage, contribute to code stability and reliability. By incorporating these best practices into the software development process, developers can build robust, maintainable, and high-quality ReactJS applications.</p>
     </div>
     <button class="collapsable">Blog and Professional products</button>
-    <div id="blog" class="content">
+    <div id="blog" class="contents">
         <h2>Blog and Professional products</h2>
-        <a href="#blog" id="blog_scroll">> Jump to the blog</a>
         <a href="#blog" id="blog_deep">> Jump in the deep end</a>
         <h3>06.02.2023 | My first day in the company</h3>
         <p>My first day in the company went smooth. I received my company email, I used the email to log into all my newly created accounts and I gained access to the GitLab repository of the project that I will work on. I made some tasks for the day and I explored the annotator tool. I started by fixing some typos in the Readme.md file. This very simple step enabled me to learn the process of how the branching process is done in the company and how different issues are handled. After fixing some of the typos I went ahead to run the annotator tool locally.</p>
@@ -565,6 +564,37 @@
             <img src="images/figmaNewMockup.png">
             <figcaption>Image 8 - New Figma Mockup.</figcaption>
         </figure>
+        <h3>15.05.2023 | Investigation: Loudly to its-annotate connection</h3>
+        <p>I went on to investigate the issue with the Loudly to its-annotate connection that is necessary for the creationg of the automated assignments for the annotators. I first started by going through the code of the its-annotate issue that was connected to this. After I saw that there was a solution implemented I messaged Nikita, the one that was assigned to the issue and he told me that on the side of its-annotate everything was done and ready to go, except that we had to initialize the cronjob in the GAE project. He recommended that I also message Aniket, the Loudly programmer, who was also responsible for the connection, but on the side of Loudly. I messaged him and we spoke a bit about this issue, he linked the issues that were connected to it and I saw that there was an implementation on Loudly's side as well. I had to test this all, so I reported to Kees about this and I went on to setup Loudly locally.</p>
+        <h3>16.05.2023 | Loudly investigation conclusion</h3>
+        <p> I will lay out the current situation and the plan I have for fixing all the existing problems and actually implementing the automatic assignment creation.
+        <p>There are two sides of this implementation. The Loudly side that is the responsibility of @ani0796 and the its-annotate side that was the responsibility of @nik1ta.k. As of this moment, we have multiple tasks that are completed on both sides but not fully.</p>
+        <h4>Loudly</h4>
+        <p>First in line is Loudly, I spoke with Aniket and he described his solution to this problem. He has indeed implemented a function that brings the required data to its-annotate via the external annotator API endpoint from the side of its-annotate. The function that he created is basically this (Cleaned for readability purposes):</p>
+        <pre><code>
+    const sendSpeechTherapyResultsToAnnotator = async (results) => {
+        const audioIds = results.map((result) => result.audio.split('/')[4]);
+        const soundSuccessful = results.map((result) => result.success);
+        const response = await axios.post(ANNOTATE_URL, {
+        audio_ids: audioIds,
+        sound_successful: soundSuccessful,
+        });
+    };
+        </code></pre>
+        <p>This is fine for the data that its-annotate requires, but recently the external api endpoints have been secured and this function might need refactoring to work properly. This code has not yet been merged into master so we might need a new re-implementation of it in a new MR also, as Aniket said, we would have a lot of conflicts otherwise. I don't believe I am missing anything else here, but if I am please correct me.</p>
+        <h4>its-annotate</h4>
+        <p>There are two things that we want to focus on here:</p>
+        <ul>
+            <li>The /external api endpoints, where we get the data from Loudly</li>
+            <li>Cronjob for combining all of the received annotations in an assignment for the external assessor to deal with</li>
+        </ul>
+        <p>This has been implemented and merged into master, the endpoints exist in the code currently. We might have to do some refactoring here, because as Nikita put it, we need to consider organization ids to distinguish the externally received annotations in case there will be new clients to use this functionality. For now, I believe that making it work would be our main goal and we do not need to make the sin of premature optimization, let's get the system running.</p>
+        <h4>GAE project</h4>
+        <p>The cronjob needs to be initialized from here. I need permission for this, and an explanation or a guide how to use it, as I haven't encountered this before.</p></p>
+        <h3>17.05.2023 | Setting up Loudly locally</h3>
+        <p>I started by pulling the repository from our gitlab and following the readme file to see how exactly I was supposed to set it up. I ran the <b>npm ci</b>, which ensured that the dependecies were installed, without creating a <b>package.lock</b> file, which saves a bit of time in the pipeline, but this is the first time I'm setting up a project using this command. Afterwards I setup the .env files and got the database running in docker compose, next I used the <b>npx sequelize-cli db:migrate</b> command to migrate the data. Loudly is internally comprised of three seperate projects - <b>player</b> <b>manage</b> and <b>backend</b> projects. I started each one of those and made sure everything is correct. Next, I had to setup the local firebase in order to have authentication setup. I tried setting it up but something broke, and I couldn't get it fixed, it was nearly the end of the day and I had to try again tomorrow.</p>
+        <h3>19.05.2023 | Setup local Loudly, bigs encountered</h3>
+        <p>With the help of Max, from the Loudly team I managed to setup the local firebase and successfully ran the project. After I registered and created a brand new user, I went in the database using PGAdmin and changed the role of the newely created user to "admin". Afterwards I could successfully login as a manager and setup a course. For my use case and in order to test the code that I have for the automatic assingment creation I needed to create a speech therapy course, but that was in vain because of a bug connected to firebase. See, when they switched to a local firebase everything was changed, and the file storage was no longer working. This blocked me from going any further with this issue, as now it concerned Loudly.</p>
     </div>
     <button class="collapsable">Conclusion and Recommendations</button>
     <button class="collapsable">Personal Reflection</button>
