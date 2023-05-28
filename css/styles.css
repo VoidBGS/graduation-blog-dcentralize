@@ -147,10 +147,15 @@ figcaption {
     box-shadow: var(--primary) 0px 18px 50px -10px;
 }  
 
-.content{
+.content {
     max-height: 0;
     overflow: hidden;
     transition: max-height 50ms ease-in;
+}
+
+.button-wrap {
+    display: flex;
+    justify-content: center;
 }
 
 #UP {
@@ -189,10 +194,12 @@ figcaption {
 #fn-button {
     background-color: transparent;
     color: var(--primary);
-    border-radius: 5px;
+    border-radius: 50%;
     border:0;
-    width: 100%;
     font-size: 1.1rem;
+    cursor: pointer;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 @-moz-keyframes scroll-left {
