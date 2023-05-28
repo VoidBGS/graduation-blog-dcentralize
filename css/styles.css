@@ -180,6 +180,7 @@ figcaption {
     cursor: pointer;
     box-shadow: 0px 1px 10px 1px var(--primary);
     transition: right 900ms;
+    z-index: 1;
 }
 
 #fast-scroll:hover {
