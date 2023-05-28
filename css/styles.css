@@ -29,6 +29,7 @@ h5 {
 
 p {
     white-space: pre-wrap;
+    overflow: hidden;
 }
 
 b {
