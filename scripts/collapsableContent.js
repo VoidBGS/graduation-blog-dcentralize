@@ -19,7 +19,7 @@ const addFunctionToBtn = (e) => {
         contentElem.style.maxHeight = null;
 
     else
-        contentElem.style.maxHeight = "100%";
+        contentElem.style.maxHeight = "fit-content";
 }
 
 addEventsToBtns(collapsableBtns);
