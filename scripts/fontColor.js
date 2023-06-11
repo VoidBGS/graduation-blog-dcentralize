@@ -21,7 +21,7 @@ function changeColor(root) {
 }
 
 function loadColorFromStorage(event) {
-    event.preventDefault();
+    event?.preventDefault();
     
     const loadedColor = localStorage.getItem(STORAGE_NAME);
     rootElem.style.setProperty(PRIMARY_ATTRIBUTE_NAME, loadedColor);
