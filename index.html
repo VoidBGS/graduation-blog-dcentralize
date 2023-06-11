@@ -689,7 +689,7 @@
         <h3>17.05.2023 | Setting up Loudly locally</h3>
         <p>I started by pulling the repository from our gitlab and following the readme file to see how exactly I was supposed to set it up. I ran the <b>npm ci</b>, which ensured that the dependecies were installed, without creating a <b>package.lock</b> file, which saves a bit of time in the pipeline, but this is the first time I'm setting up a project using this command. Afterwards I setup the .env files and got the database running in docker compose, next I used the <b>npx sequelize-cli db:migrate</b> command to migrate the data. Loudly is internally comprised of three seperate projects - <b>player</b> <b>manage</b> and <b>backend</b> projects. I started each one of those and made sure everything is correct. Next, I had to setup the local firebase in order to have authentication setup. I tried setting it up but something broke, and I couldn't get it fixed, it was nearly the end of the day and I had to try again tomorrow.</p>
         <h3>19.05.2023 | Setup local Loudly, bugs encountered</h3>
-        <p>With the help of Max, from the Loudly team I managed to setup the local firebase and successfully ran the project. After I registered and created a brand new user, I went in the database using PGAdmin and changed the role of the newely created user to "admin". Afterwards I could successfully login as a manager and setup a course. For my use case and in order to test the code that I have for the automatic assingment creation I needed to create a speech therapy course, but that was in vain because of a bug connected to firebase. See, when they switched to a local firebase everything was changed, and the file storage was no longer working. This blocked me from going any further with this issue, as now it concerned Loudly.</p>
+        <p>With the help of Max, from the Loudly team I managed to setup the local firebase and successfully ran the project. After I registered and created a brand new user, I went in the database using PGAdmin and changed the role of the newly created user to "admin". Afterwards I could successfully login as a manager and setup a course. For my use case and in order to test the code that I have for the automatic assingment creation I needed to create a speech therapy course, but that was in vain because of a bug connected to firebase. See, when they switched to a local firebase everything was changed, and the file storage was no longer working. This blocked me from going any further with this issue, as now it concerned Loudly.</p>
         <h3>22.05.2023 | New mockup for detailed annotations</h3>
         <p>I needed to create a new mockup for the detailed annotations task that I took up before. This was because the last mockup was a bit too simplistic, so we had a chat with kees and we went for another design that should help the annotators more. I still went for a minimalistic design, as I did not want to have a complex frontend for the annotators. I created this</p>
         <figure>
@@ -870,12 +870,132 @@
         <p> <b>color</b> is set to one of the colors from the <b>colorArray</b> based on the current iteration.</p>
         <p> <b>data</b> is an object that contains additional custom data associated with the subregion, such as annotations and labels.</p>
         <p><b>selectedSubregions.current</b> array is updated with the newly created subregions.</p>
-        <h3>05.05.2023 | </h3>
-        <h3>06.05.2023 | </h3>
-        <h3>07.06.2023 | </h3>
-        <h3>08.06.2023 | </h3>
-        <h3>09.06.2023 | </h3>
-
+        <h3>05.05.2023 | Last fortnightly status update before deadline, bugfixing</h3>
+        <p>We are nearing the end of the semester and we need to submit our portfolios next week, this makes it the last meeting before the portfolio is submitted. Hopefully Mike will give us some feedback on our progress. In the morning I worked on a bunch of bugs that were associated with the detailed annotations and how the regions worked. I've located two bugs until now, one has to do with the resizing of the start and end region, right now they don't resize the selected region and this is not good, if the start or end subregion are updated this should automatically resize the selected region also. I also found another bug that had to do with the sizing of the word labels when zooming into the word. The word labels are not being resized properly and they get pushed to the left of the wavesurfer.</p>
+        <p>First, I started working on the resizing of the word labels. I saw that this was not properly handled as I had forgotten to add the dynamic pixed recalulation functionality to my animated zoom in function that I created a while back, this was as simple as adding the function to that and it seemed to fix the problem. Now I still had another issue though and it was the resizing issue, this would potenitally take me a lot of time, so I started preparing for the meeting wiht the university team. See video for bugs below:</p>
+        <video controls>
+            <source src="./videos/bugsVid.webm" type="video/mp4">
+          Your browser does not support the video tag.
+        </video> 
+        <p>During the meeting with the team Mike did not really have time to give us the feedback necessary, because he had a final sprint delivery with the semester 6 students he had. He told us that he is free to discuss our projects during the week, so I will probably reserver a hour then and get some feedback from him, hopefully. I went on to the bug with the resizing of the regions and I saw that it would probably take me a whole day to implement as this required a brand new event handler that takes care of the update of the subregions. Nevertheless I started work on it but it was nearing the end of my workday so I left it for tomorrow.</p>
+        <h3>06.05.2023 | Sprint delivery</h3>
+        <p>Sprint delivery is today and we are going to present what each of the its-language team did. Since the sprint delivery is a bit later in the day I kept on developing the function that was needed for the resizing of the subregions. I started by adding an event to the wavesurfer object's regions. The event was attached to the <b>region-updated</b> handle. This event triggers everytime a region is updated in size. I first disabled the drag for the selected region as dragging, like shown in the video above, must not happen. If we had dragging we would need to calculate the subregions again, as they have to move with the selected region if it is in zoomed in mode.</p>
+        <p>Time came for the sprint delivery and I had to pause programming. During the delivery I had the idea to show a small demo of the detailed annotations, but for some reason the server decided not to start at all just before the demo :) . This caused me to miss the demo and I told the team that I would present a few videos afterwards on Slack, pity but it happens!</p>
+        <h3>07.06.2023 | Sprint planning with Kees</h3>
+        <p>Yesterday I managed to miss Kees' slack message, where he invited me to a sprint plannign session. I invited him to a planning session today and he told me that he will message me once he is ready. Meanwhile I started work on finishing up what I started yesterday, and I managed to complete the resizing function. The code that I created made use of the fragment list that we had in the page, which was used only for the initial loading of the words, but I incorporated it into the new function called <b>zoomedInRegionResize</b>.</p>
+        <p>This function takes care of resizing the selected region by taking the subregion that is being resized and finding whether or not it has a left or a right neigbour. If it has a right neigbour and a left one we can say that this subregion is not the edge of the selected region and we ignore it. If it does not have a right or left neighbour though, we conclude that this is either an edge subregion of the selected region, or the selected region only has one sound, in which case we return nothing. If it is an edge region we take the necessary steps to resize the selected region, finally we use a function to force update everything because React does not want to work with me sometimes. Below is the code for it:</p>
+        <pre>
+            <code>
+    const zoomedInRegionResize = (region) => {
+        if (!region?.data?.detailedAnnotation) {
+            return;
+        }
+    
+        const elementIndex = selectedSubregions.current.indexOf(region);
+        const leftNeighbourSubregion = selectedSubregions.current[elementIndex - 1];
+        const rightNeighbourSubregion = selectedSubregions.current[elementIndex + 1];
+        const parentElementRegion = region.data.parentRegion;
+    
+        if (leftNeighbourSubregion !== undefined && rightNeighbourSubregion !== undefined) {
+            return;
+        }
+    
+        const { leftFragment, rightFragment } = findNeighbourRegions(parentElementRegion, true);
+    
+        if (leftNeighbourSubregion === undefined && (leftFragment === undefined || leftFragment?.end <= region.start)) {
+            parentElementRegion.update({ start: region.start });
+        }
+        else if (rightNeighbourSubregion === undefined && (rightFragment === undefined || rightFragment?.start >= region.end)) {
+            parentElementRegion.update({ end: region.end });
+        }
+        else {
+            if (rightFragment?.start <= region.end) {
+            region.update({ end: parentElementRegion.end })
+            }
+            else {
+            region.update({ start: parentElementRegion.start });
+            }
+        }
+    
+        forceUpdate();
+    };
+            </code>
+        </pre>
+        <h3>08.06.2023 | Hotkeys!</h3>
+        <p>What would be better than just clicking a word and then going into the detailed annotations? Well hotkeys! What if we want to use the arrow keys to navigate throughout the word list and annotate very fast, a 10x annotator if you may. For this reason I wanted to add hotkeys into the fray and utilize their power. This would prove another challange though as this time not only did we have to take the selected element's neighbours, but we also had to recalulate the subregions to the newly selected region.</p>
+        <p>As always I started simple, by creating the function <b>findNeighbourRegions</b>. The idea was to find the neighbour regions, no matter if the region is a subregion or a standard region. I went on to create this function:</p>
+        <pre>
+            <code>
+    function findNeighbourRegions(region, isFragments = false) {
+        if (!region || fragmentsRef.current?.length <= 1) {
+            return;
+        }
+    
+        const fragmentId = fragmentsRef.current.findIndex(element =>
+            element.labels[0].label === region.data?.labels[0]?.label);
+    
+        if (fragmentId === -1) {
+            return;
+        }
+    
+        const leftFragment = fragmentsRef.current[fragmentId - 1];
+        const rightFragment = fragmentsRef.current[fragmentId + 1];
+    
+        if (isFragments) {
+            return {
+            leftFragment: leftFragment,
+            rightFragment: rightFragment
+            };
+        }
+    
+        if (leftFragment === undefined && rightFragment === undefined) {
+            return;
+        }
+    
+        const regions = Object.values(wavesurfer.current.regions.list);
+    
+        const neighbours = regions.filter(
+            region => (leftFragment?.start === region.start && leftFragment?.end === region.end
+            || rightFragment?.start === region.start && rightFragment?.end === region.end));
+    
+        if (leftFragment === undefined) {
+            return { rightNeighbour: neighbours[0] };
+    
+        }
+        else if (rightFragment === undefined) {
+            return { leftNeighbour: neighbours[0] };
+        }
+    
+        return { leftNeighbour: neighbours[0], rightNeighbour: neighbours[1] };
+    }
+            </code>
+        </pre>
+        <p>This function seems to have a bug in it, and I am not certain where it was. I finished up the event handler for the keys and called upon the function here, it looked something like this:</p>
+        <pre>
+            <code>
+    const moveZoomedInMode = (isLeft) => {
+        const { leftNeighbour, rightNeighbour } = findNeighbourRegions(selectedRegion.current);
+    
+        if (!leftNeighbour && !rightNeighbour) {
+            return;
+        }
+    
+        if (isLeft && leftNeighbour) {
+            cancelZoomedInMode();
+            markRegionAsSelected(leftNeighbour);
+            startZoomedInMode(leftNeighbour);
+        }
+        else if(!isLeft && rightNeighbour) {
+            cancelZoomedInMode();
+            markRegionAsSelected(rightNeighbour);
+            startZoomedInMode(rightNeighbour);
+        }
+    }
+            </code>
+        </pre>
+        <p>This worked fine, but because of the <b>findNeighbourRegions</b> something did not work correctly, I will get to the bottom of this tomorrow.</p>
+        <h3>09.06.2023 | Hotkey bugfix</h3>
+        <p>I had a bug associated with the function that I created yesterday. I spent almost the whole morning today trying to find the weird bug. The bug itself manifested itself in that sometimes it did not reach the end of the word list, instead it went back for some reason. I went on the hunt for this and used every <b>console.log</b> in my power to find where the mistake was. Finally, after hours of searching I saw that the bug was located in the findIndex function. I was searching for a lable, which is the actual word, for example if the word is "feest" the label would be the same as well, this however meant that if there is more than one word it will return the index of the first word that was found in the list. This is why I got weird results when I used the arrows when trying to navigate the list of words. I went on to fix this bug by chaning the findIndex function until it looked like this - <b>fragmentsRef.current.findIndex(element => (element.start === region.start && element.end === region.end));</b></p>
     </div>
     <button class="collapsable">Conclusion and Recommendations</button>
     <button class="collapsable">Personal Reflection</button>
