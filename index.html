@@ -160,7 +160,7 @@
         </div>
     </div>
     <button class="collapsable">Blog and Professional products</button>
-    <div id="blog" class="content">
+    <div id="blog" class="contents">
         <h2>Blog and Professional products</h2>
         <a href="#blog" id="blog_deep">> Jump in the deep end</a>
         <h3>06.02.2023 | My first day in the company</h3>
@@ -620,12 +620,12 @@
         <h3>05.05.2023 | Wireframes and Design</h3>
         <p>For the <b>Adding more detailed annotations</b> issue I decided to use <a href="https://www.figma.com/">Figma</a> and created a prototype to the sketch that Kees and I created during our planning session. The sketch looked something like this:</p>
         <figure> 
-            <img src="images/mockup.png" loading="lazy">
+            <img src="images/mockup.png" class="m-img" loading="lazy">
             <figcaption>Image 6 - Planning Sketch.</figcaption>
         </figure>
         <p>This is the crude sketch that was made by Kees and I. As you can see the first iteration of it has a <b>SAVE</b> button, which does not fit well with the application. My idea would be to simplify this process and get rid of the <b>SAVE</b> button. As of this moment I am not certain how the KAT tool works, but when we were planning this with Kees, he suggested that the best course of action would be to use the KAT tool to split up the word AFTER the annotator has clicked on it. So I made this figma mockup:</p>
         <figure> 
-            <img src="images/figma.png" loading="lazy">
+            <img src="images/figma.png" class="m-img"loading="lazy">
             <figcaption>Image 7 - Figma Mockup.</figcaption>
         </figure>
         <p>I chose this design, because it is the most user-friendly option in my opinion. There is only one button and that is for closing, after the annotation is complete. The removal of the annotation can be done the normal way, using the general delete commands. This design can ensure that the annotators are capable of having more detailed annotations and this can also help improve the AI model. </p>
@@ -646,7 +646,7 @@
         <h3>12.05.2023 | Finishing up the new mockup</h3>
         <p>I created the newest version of the design mockup for the <b>More detailed annotations</b> issue that I am assigned to. Last time the design that I submitted was not possible with the technologies we have, and during the planning with Kees I made sure to go into more details and made sure to get the correct information once more. This is the design I thought of:</p>
         <figure> 
-            <img src="images/figmaNewMockup.png" loading="lazy">
+            <img src="images/figmaNewMockup.png" class="m-img" loading="lazy">
             <figcaption>Image 8 - New Figma Mockup.</figcaption>
         </figure>
         <h3>15.05.2023 | Investigation: Loudly to its-annotate connection</h3>
@@ -683,12 +683,12 @@
         <h3>22.05.2023 | New mockup for detailed annotations</h3>
         <p>I needed to create a new mockup for the detailed annotations task that I took up before. This was because the last mockup was a bit too simplistic, so we had a chat with kees and we went for another design that should help the annotators more. I still went for a minimalistic design, as I did not want to have a complex frontend for the annotators. I created this</p>
         <figure>
-            <img src="images/detailed_annotations1.png" loading="lazy">
+            <img src="images/detailed_annotations1.png" class="m-img" loading="lazy">
             <figcaption>Image 9 - Detailed Annotations Figma Mockup (Part 1).</figcaption>
         </figure>
         <p>This is how it looks now. It is comprised of a new wavesurfer section, that is playing the role of a more zoomed in view of the selected section that contains the mispronounced word. The annotator has the ability to annotate the incorrectly pronounced sound and correct it using the UI. The corrections will each have a slightly different color, as this will make the distinction between the different incorrectly pronounced sounds.</p>
         <figure>
-            <img src="images/detailed_annotations2.png" loading="lazy">
+            <img src="images/detailed_annotations2.png" class="m-img" loading="lazy">
             <figcaption>Image 10 - Detailed Annotations Figma Mockup (Part 2).</figcaption>
         </figure>
         <p>This is how it looks when there are multiple sections annotated, the colors are different and easily recognizable by the annotator. The "X" button is used to cancel the current annotated sections and it works like pressing the Delete button on the keyboard for other normal annotations. The Check button works by saving the annotations in a new field. This new field will have the selected sections and the corrected sounds, in the JSON file the corrected sounds will have the ** * ** symbol attached to them so the model knows they have undergone manual correction. The weight of these corrections may be determined by a future implementation of the #215 issue.</p>
@@ -702,6 +702,170 @@
         <p>The International Phonetic Alphabet (IPA) is the widely recognized standard for annotating sounds. However, one challenge is that some IPA characters are not part of the ASCII character set, which poses practical difficulties for universal usage. To address this issue, certain companies, like Auris, have developed their own unique annotation standards that fit their specific needs. While these standards are not officially recognized, they provide an alternative approach. It is necessary to have a system that supports multiple standards to accommodate the unique annotation practices across different contexts. As of this moment, the annotations that are made in the tool do not have a standard attached to them. We could consider that IPA is our standard, but since the majority of the users are not using IPA and they abide by a unique company standard, we should have the option of assigning different types of annotating standards in the tool. This could be a simple setting that can be selected, which reads "Auris Annotation" "German Annotation" "International Phonetic Alphabet" etc. The speech experts that are using the tool should also be able to see how the standard works and what characters there are, this can be done by having a link to a PDF document that showcases it and makes it clear. Setting the standards like this could introduce new and interesting features - linting for the annotations and validation in the backend, by making use of the rules of the standard. We can also have some complex checks like checking to see if sounds are connected in a logical manner.</p>
         <h3>26.05.2023 | Exploring wavesurfer.js</h3>
         <p>I went on to explore <a href="https://wavesurfer-js.org/">wavesurfer</a> project and I saw the functions that are used and the options I have to finish my task. I read through the documentation and saw what kind of functions the wavesurfer object offered. I also played around in the code and saw that it would be very hard to create another wavesurfer object into a modal, like in the screenshots above. I will work on this more and see if it would be indeed possible to create something of a prototype using a second wavesurfer object.</p>
+        <h3>29.05.2023 | Creating the zoomed in modal</h3>
+        <p>When I finished reading up on the wavesurfer library, seeing examples of what it is capable of doing and reading how our own implementation of wavesurfer is done I started work on the detailed annotations functionality. I started by creating a modal that will act as our zoomed in window, that we plan to have another wavesurfer object inside. I also played around with the functinality of the wavesurfer to see how it operates. I added an <b>onClick</b> event handler to the word labels that were located throughout the wavesurfer. I successfully created a function that passes a state variable as a prop to the new modal object that I created previously.</p>
+        <p>I completed this then I went to try and fit another wavesurfer object inside the created model, but it seems like this is not something the library supports and things started to get dicey. At first it just didn't work, but after some trial and error I managed to at least showcase the wavesurfer object, although it was still very slow and laggy. I went on Google to see what options I had, but I found nothing. I saw that the thing I was trying to achieve was not in the capabilites of the library, and it needed a lot of modifying to make it work for our use case. As this seemed unfeasable now, and I was low on time I thought of a new way to create the same functionality, but with a different method. I left this for tomorrow.</p>
+        <h3>30.05.2023 | An alternative approach</h3>
+        <p>After working on the wavesurfer audio editor and doing some experiments with it, I concluded that the prototype above, that we are trying to create, is working against the audio editor. The option to include a part of the initial wavesurfer into another one is not there and the only way to do that, that I thought of, was to create a whole different wavesurfer object that loads the file again and zooms into the word that we are trying to annotate. Even this will prove a challenge, because the annotations need to be translated and put into the original wavesurfer object. This would be over engineering and it would take a lot of time for the implementation. Also, this is very costly to the speed of the website, as the audio object is heavy. So, after doing these experiments and reading the documentation I started working on another prototype that would work better with what wavesurfer is giving us.</p>
+        <figure>
+            <img src="images/detailed_annotations3.png" class="m-img" loading="lazy">
+            <figcaption>Image 11 - Detailed Annotations Figma Mockup (Part 3).</figcaption>
+        </figure>
+        <p>This image showcases what I am aiming for. Reusing the initial wavesurfer object and zooming into the word (hopefully with an animation), separating the zoomed in word's sounds with the regions that we were talking about (same as in model). I will also try to play with the height of the sound waves, to better visualize them as right now they look tiny. This will work the same way as the model, but the implementation is actually feasible within the time frame that we are working with. </p>
+        <h3>31.05.2023 | Baby steps</h3>
+        <p>As with a lot of the features that I created during my time in this company, I always start with the small steps first. Today I received the green light to go with the design I mentioned yesterday to my company mentor. I started with creating the modal again, when clicking on the modal I passed the word in it and this time I managed to position it correctly. After this was done I went to create the cancel button for the modal, it was as easy as passing the state and checking to see if it is <b>true</b> or <b>false</b>. After this I moved on to a more interesting matter and that was the actual zoom to see the lower frequencies. I made use of the <b>wavesurfer.current.zoom</b> function that the wavesurfer object offered. This successfully zoomed in, but now I needed to zoom back out so I created a zoom out command that did the trick, it simply returned the user to the previous zoom before this one, which was saved in the localStorage object in the browser.</p>
+        <p>The zoom was working, now it was time to add some more details, I made sure to add a new function called <b>zoomInAnimate</b>, which animated the zoom in process. I did this not only for design points, but also as a way to show the user that this is indeed zooming into the word that was clicked. The function ended up looking something like this:</p>
+        <pre>
+            <code>
+    const zoomInAnimate = (zoomInValue = 2000, slowDownInMs = 0.1, zoomMultiplier = 1.65) => {
+        let nextValue = zoomValue;
+        const nextWaveLength =
+            wavesurfer.current.getDuration() * zoomInValue * DEFAULT_PIXEL_RATIO;
+    
+        let intervalId = setInterval(function () {
+            nextValue *= zoomMultiplier;
+            if (nextValue > zoomInValue)
+            clearInterval(intervalId);
+            else {
+            setPxPerSec(nextValue);
+            wavesurfer.current.zoom(nextValue);
+            }
+        }, slowDownInMs);
+    
+        setWaveLength(nextWaveLength);
+    }
+            </code>
+        </pre>
+        <p>The function takes three parameters: <b>zoomInValue</b>, <b>slowDownInMs</b>, and <b>zoomMultiplier</b>. These parameters have default values if they are not provided when calling the function.</p>
+        <p><b>zoomInValue</b> represents the final zoom value that the waveform will reach. The default value is 2000.</p>
+        <p><b>slowDownInMs</b> represents the delay between each step of the animation in milliseconds. The default value is 0.1.</p>
+        <p><b>zoomMultiplier</b> determines the rate at which the waveform zooms in. It is a multiplier applied to the current zoom value. The default value is 1.65.</p>
+        <p>The function first initializes a variable <b>nextValue</b> with the current <b>zoomValue</b>.</p>
+        <p><b>nextWaveLength</b> is calculated based on the duration of the waveform <b>wavesurfer.current.getDuration()</b> multiplied by <b>zoomInValue</b> and <b>DEFAULT_PIXEL_RATIO</b>.</p>
+        <p>The function sets an interval using <b>setInterval</b> which repeatedly executes the callback function every <b>slowDownInMs</b> milliseconds. The callback function inside the interval increases nextValue by multiplying it with <b>zoomMultiplier</b>.</p>
+        <p>If nextValue becomes greater than <b>zoomInValue</b>, the interval is cleared using <b>clearInterval(intervalId)</b> to stop the animation.</p>
+        <p>Otherwise, the function updates the value of <b>pxPerSec</b> and zooms the waveform using <b>wavesurfer.current.zoom(nextValue)</b>.</p>
+        <p>Finally, the function sets the <b>waveLength</b> state to <b>nextWaveLength</b>.</p>
+        <p>This brings a smooth zoom when clicking on a word, and it gives the user enough time to see what is going on. After the zoom was handled I had to handle the zoom out, so I created an event that is triggered when the cancel button on the modal is clicked, this function zooms out of the current zoomed in waveform and it sets the states back to their original values</p>
+        <pre>
+            <code>
+    const cancelZoomedInMode = e => {
+        e?.preventDefault();
+        const nominalWidth = Math.round(
+            wavesurfer.current.getDuration() * 100 * DEFAULT_PIXEL_RATIO,
+        );
+        setPxPerSec(zoomValue);
+        setWaveLength(nominalWidth);
+        isZoomedIn.current = false;
+        setIsDisabled(false);
+        setWord('');
+        selectedSubregions.current = [];
+        wavesurfer.current.params.barHeight = 1;
+        wavesurfer.current.params.autoCenter = true;
+        wavesurfer.current.zoom(zoomValue);
+    }  
+            </code>
+        </pre>
+        <p>This helped me move to the next step - coloring the regions. This will be done tomorrow as the day is over.</p>
+        <h3>01.06.2023 | Colored regions</h3>
+        <p>Colored regions are necessary to make the distinction between the sounds in the word necessary. First, I would need to see how exactly the regions in the wavesurfer work. I went along and created a new function that hides all the regions that are not zoomed into when the annotator zooms into a word.</p>
+        <pre>
+            <code>
+    const changeUnselectedLabelsColor = (colorStr, selectedLabelWord) => {
+        const regions = Object.values(wavesurfer.current.regions.list);
+        regions.forEach(obj => {
+            if (obj?.data?.labels[0]?.label && obj.data.labels[0].label !== selectedLabelWord)
+            obj.color = colorStr;
+        })
+    }
+            </code>
+        </pre>
+        <p>Creating this function enabled me to hide the other regions, while zoomed in. This will make it easier for the annotators to focus on a single sound and not to pay attention to anything else. I also created a state to disable the zoom in and zoom out buttons, when in the zoomed in mode. I also centered the word in the wavesurfer and disabled the movement of the cursor while playing audio. I did this because if you zoomed into a larger word it would take up the whole screen and when you play it it would start moving immediately, which may make some annotators a bit confused. This function was simple enough to create but...</p>
+        <p>The fun part started when I started creating the <b>createWordSoundRegions</b>. It proved a bit more difficult than expected to caluclate the exact position of the colored regions in the wavesurfer. At first I thought it would be as easy as slapping some regions inside the selected region, but after a bit of thinking I realized that we have the <b>start</b> and the <b>end</b> of the selected region's position inside the wavesurfer, and now I had to create the function, which takes those parameters as well as the number of total sounds a word has and calulates their width in regards to the selected region, but I also needed to palce these regions inside the selected regions somehow and this is where my high school math came in handly. I stopped coding and thought about it for a bit with a pen and paper. This are my thoughts and possible solution:</p>
+        <h5>Variables</h5>
+        <p>We are given three parameters</p>
+        <p>The start of the region : start</p>
+        <p>The end of the region : end</p>
+        <p>The amount of subregions we need to fit : length</p>
+        <h5>My solution</h5>
+        If we know the start and end of the region we can calculate the region's width by adding the start with the end: width = start + end.
+        By knowing the width we can calculate what width percentage each subregion should have to be evenly fitted into the selected region by dividing the total width of the selected region, that we got before, to the length. After doing this we get the width that each subregion should have to be evenly fitted in the selected region, we can use this width value to get the percentage width of each subregion.
+        <h5>Example 1 </h5>
+        <p>start = 3</p>
+        <p>end = 5</p>
+        <p>length = 4</p>
+        <p>We calc the width = start + end, which is 9. Now we divide our width to the length and we get 2.25. We get the percentage of that number from our width - 2.25 * 100 / 9 and we get 25%. Which means each subregion will have the width of 25% of the selected region's width.</p>
+        <h5>Example 2 </h5>
+        <p>start = 4</p>
+        <p>end = 7</p>
+        <p>length = 3</p>
+        <p>We calculate the width = start + end, which is 11. Now we divide our width to the length and we get 3.66. We get the percentage of that number from our width - 3.66 * 100 / 11and we get 33.2727%. Which means each subregion will have the width of 33.2727% of the selected region's width.</p>
+        <p>Now that we know the percentage of the width of the subregion we can simply multiply that percentage with the start of our selected region with the first subregion in the list to get the end of that subregion. We save the end of that subregion and use it as a start of the next region and so on, until we reach the end of the selected region, thus having even subregions in the selected region.</p>
+        <h3>02.06.2023 | Implementing the colored regions function</h3>
+        <p>Alright, I thought about it and now it was time for the implementation. First, I got the total length of the selected region, and then I calculated the percentage that the subregions should have inside the selected region, afterwards I got the position of where the first element and managed to complete everything, here is how I implemented this:</p>
+        <pre>
+            <code>
+    function createWordSoundRegions(word, wordRegion) {
+        const letters = word.split("");
+        console.log("props", props, sounds);
+        const amountOfSubRegions = letters.length;
+    
+        let start = wordRegion.start;
+        let end = wordRegion.end;
+
+        const widthOfSelectedRegion = start + end;
+        const percentageIncrease = (widthOfSelectedRegion / amountOfSubRegions) / widthOfSelectedRegion;
+        const widthOfSubregion = (end - start) * percentageIncrease;
+
+        let colorArray = ['rgba(200,120,120,0.2)',
+            'rgba(120, 200, 120, 0.4)',
+            'rgba(120, 120, 200, 0.4)',
+            'rgba(174, 60, 200, 0.4)',
+            'rgba(70, 250, 250, 0.4)'];
+    
+        for (let i = 0; i < amountOfSubRegions; i++) {
+            end = start + widthOfSubregion;
+            selectedSubregions.current.push(<b>wavesurfer.current.addRegion</b>({
+            start: start,
+            end: end,
+            drag: false,
+            color: colorArray[i],
+            data: {
+                custom: true,
+                detailedAnnotation: true,
+                labels: [],
+                parentRegion: wordRegion,
+            },
+            }));
+            start = end;
+        };
+    }
+            </code>
+        </pre>
+
+        <p><b>createWordSoundRegions</b> function takes two parameters: <b>word</b> and <b>wordRegion</b>. <b>word</b> is a string representing a word, and <b>wordRegion</b> is an object containing the start and end positions of the larger region in the waveform.</p>
+        <p>letters variable is assigned an array of individual letters extracted from the word string using the split method.</p>
+        <p>A <b>console.log</b> statement is used to output the values of props and sounds, which are not defined in the code snippet. This statement might be used for debugging purposes.</p>
+        <p><b>amountOfSubRegions</b> variable is assigned the length of the letters array, representing the number of subregions that will be created.</p>
+        <p><b>start</b> and <b>end</b> variables are initialized with the start and end positions of the <b>wordRegion</b>.</p>
+        <p><b>widthOfSelectedRegion</b> variable calculates the width of the selected region by adding the <b>start</b> and <b>end</b> positions together.</p>
+        <p><b>percentageIncrease</b> variable calculates the percentage increase needed for each subregion based on the width of the selected region and the number of subregions. This calculation ensures that each subregion is proportional to its corresponding letter in the word.</p>
+        <p><b>widthOfSubregion</b> variable calculates the actual width of each subregion by multiplying the difference between the start and end positions of the <b>wordRegion</b> by the <b>percentageIncrease</b>.</p>
+        <p><b>colorArray</b> is an array of strings representing different colors used to assign colors to the subregions.</p>
+        <p>A loop iterates over the <b>amountOfSubRegions</b> to create each subregion. In each iteration</p>
+        <p>The end position is updated by adding the <b>widthOfSubregion</b> to the start position.</p>
+        <p><b>wavesurfer.current.addRegion</b> method is called to create a subregion within the waveform visualization. The <b>start</b>, <b>end</b>, <b>drag</b>, <b>color</b>, and <b>data</b> properties are provided to define the subregion.</p>
+        <p> <b>start</b> and <b>end</b> represent the start and end positions of the subregion.</p>
+        <p> <b>drag</b> is set to false to disable dragging of the subregion.</p>
+        <p> <b>color</b> is set to one of the colors from the <b>colorArray</b> based on the current iteration.</p>
+        <p> <b>data</b> is an object that contains additional custom data associated with the subregion, such as annotations and labels.</p>
+        <p><b>selectedSubregions.current</b> array is updated with the newly created subregions.</p>
+        <h3>05.05.2023 | </h3>
+        <h3>06.05.2023 | </h3>
+        <h3>07.06.2023 | </h3>
+        <h3>08.06.2023 | </h3>
+        <h3>09.06.2023 | </h3>
+
     </div>
     <button class="collapsable">Conclusion and Recommendations</button>
     <button class="collapsable">Personal Reflection</button>
